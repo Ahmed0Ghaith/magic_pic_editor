@@ -17,7 +17,7 @@ class ImageEditorApp extends StatelessWidget {
     return MaterialApp(
       title: 'Image Editor',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
         useMaterial3: true,
       ),
       home: const ImageEditorHome(),
