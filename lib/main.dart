@@ -15,11 +15,8 @@ class ImageEditorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Image Editor',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        useMaterial3: true,
-      ),
+      title: 'Magic Pic Editor',
+      theme: ThemeData(primarySwatch: Colors.orange, useMaterial3: true),
       home: const ImageEditorHome(),
     );
   }
@@ -75,15 +72,16 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> _saveImage() async {
     try {
-      RenderRepaintBoundary boundary = _globalKey.currentContext!
-          .findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary =
+          _globalKey.currentContext!.findRenderObject()
+              as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       var byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       var pngBytes = byteData!.buffer.asUint8List();
@@ -95,9 +93,9 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
       await imgFile.writeAsBytes(pngBytes);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image saved to: $imagePath')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Image saved to: $imagePath')));
       }
     } catch (e) {
       _showError('Error saving image: $e');
@@ -108,45 +106,141 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
     switch (_selectedFilter) {
       case 'Grayscale':
         return const ColorFilter.matrix([
-          0.2126, 0.7152, 0.0722, 0, 0,
-          0.2126, 0.7152, 0.0722, 0, 0,
-          0.2126, 0.7152, 0.0722, 0, 0,
-          0, 0, 0, 1, 0,
+          0.2126,
+          0.7152,
+          0.0722,
+          0,
+          0,
+          0.2126,
+          0.7152,
+          0.0722,
+          0,
+          0,
+          0.2126,
+          0.7152,
+          0.0722,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
         ]);
       case 'Sepia':
         return const ColorFilter.matrix([
-          0.393, 0.769, 0.189, 0, 0,
-          0.349, 0.686, 0.168, 0, 0,
-          0.272, 0.534, 0.131, 0, 0,
-          0, 0, 0, 1, 0,
+          0.393,
+          0.769,
+          0.189,
+          0,
+          0,
+          0.349,
+          0.686,
+          0.168,
+          0,
+          0,
+          0.272,
+          0.534,
+          0.131,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
         ]);
       case 'Vintage':
         return const ColorFilter.matrix([
-          0.6, 0.3, 0.1, 0, 0,
-          0.2, 0.7, 0.1, 0, 0,
-          0.2, 0.3, 0.5, 0, 0,
-          0, 0, 0, 1, 0,
+          0.6,
+          0.3,
+          0.1,
+          0,
+          0,
+          0.2,
+          0.7,
+          0.1,
+          0,
+          0,
+          0.2,
+          0.3,
+          0.5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
         ]);
       case 'Cool':
         return const ColorFilter.matrix([
-          0.8, 0, 0, 0, 0,
-          0, 0.9, 0, 0, 0,
-          0, 0, 1.2, 0, 0,
-          0, 0, 0, 1, 0,
+          0.8,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.9,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1.2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
         ]);
       case 'Warm':
         return const ColorFilter.matrix([
-          1.2, 0, 0, 0, 0,
-          0, 0.9, 0, 0, 0,
-          0, 0, 0.7, 0, 0,
-          0, 0, 0, 1, 0,
+          1.2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.9,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
         ]);
       case 'High Contrast':
         return const ColorFilter.matrix([
-          1.5, 0, 0, 0, -50,
-          0, 1.5, 0, 0, -50,
-          0, 0, 1.5, 0, -50,
-          0, 0, 0, 1, 0,
+          1.5,
+          0,
+          0,
+          0,
+          -50,
+          0,
+          1.5,
+          0,
+          0,
+          -50,
+          0,
+          0,
+          1.5,
+          0,
+          -50,
+          0,
+          0,
+          0,
+          1,
+          0,
         ]);
       default:
         return null;
@@ -180,29 +274,58 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
     return RepaintBoundary(
       key: _globalKey,
       child: ColorFiltered(
-        colorFilter: _getColorFilter() ??
+        colorFilter:
+            _getColorFilter() ??
             const ColorFilter.mode(Colors.transparent, BlendMode.multiply),
         child: ColorFiltered(
           colorFilter: ColorFilter.matrix([
-            _contrast, 0, 0, 0, _brightness * 255,
-            0, _contrast, 0, 0, _brightness * 255,
-            0, 0, _contrast, 0, _brightness * 255,
-            0, 0, 0, 1, 0,
+            _contrast,
+            0,
+            0,
+            0,
+            _brightness * 255,
+            0,
+            _contrast,
+            0,
+            0,
+            _brightness * 255,
+            0,
+            0,
+            _contrast,
+            0,
+            _brightness * 255,
+            0,
+            0,
+            0,
+            1,
+            0,
           ]),
           child: ColorFiltered(
             colorFilter: ColorFilter.matrix([
-              0.213 + 0.787 * _saturation, 0.715 - 0.715 * _saturation, 0.072 - 0.072 * _saturation, 0, 0,
-              0.213 - 0.213 * _saturation, 0.715 + 0.285 * _saturation, 0.072 - 0.072 * _saturation, 0, 0,
-              0.213 - 0.213 * _saturation, 0.715 - 0.715 * _saturation, 0.072 + 0.928 * _saturation, 0, 0,
-              0, 0, 0, 1, 0,
+              0.213 + 0.787 * _saturation,
+              0.715 - 0.715 * _saturation,
+              0.072 - 0.072 * _saturation,
+              0,
+              0,
+              0.213 - 0.213 * _saturation,
+              0.715 + 0.285 * _saturation,
+              0.072 - 0.072 * _saturation,
+              0,
+              0,
+              0.213 - 0.213 * _saturation,
+              0.715 - 0.715 * _saturation,
+              0.072 + 0.928 * _saturation,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
             ]),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.file(
-                _image!,
-                fit: BoxFit.contain,
-                height: 400,
-              ),
+              child: Image.file(_image!, fit: BoxFit.contain, height: 400),
             ),
           ),
         ),
@@ -255,10 +378,12 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
                         width: 80,
                         margin: const EdgeInsets.only(right: 12),
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.blue : Colors.grey[200],
+                          color: isSelected ? Colors.orange : Colors.grey[200],
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: isSelected ? Colors.blue : Colors.grey[300]!,
+                            color: isSelected
+                                ? Colors.orange
+                                : Colors.grey[300]!,
                             width: 2,
                           ),
                         ),
@@ -268,7 +393,9 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: isSelected ? Colors.white : Colors.black87,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
                         ),
@@ -344,12 +471,7 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
             ),
           ],
         ),
-        Slider(
-          value: value,
-          min: min,
-          max: max,
-          onChanged: onChanged,
-        ),
+        Slider(value: value, min: min, max: max, onChanged: onChanged),
       ],
     );
   }
