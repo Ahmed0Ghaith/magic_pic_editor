@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapp"
+    namespace = "com.magic_pic_editor"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
