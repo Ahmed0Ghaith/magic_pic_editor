@@ -337,7 +337,7 @@ class _ImageEditorHomeState extends State<ImageEditorHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Editor'),
+        title: const Text('Magic Pic Editor'),
         actions: [
           if (_image != null)
             IconButton(

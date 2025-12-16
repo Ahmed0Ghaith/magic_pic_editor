@@ -1,4 +1,4 @@
-package com.example.myapp
+package com.magic_pic_editor
 
 import io.flutter.embedding.android.FlutterActivity
 
